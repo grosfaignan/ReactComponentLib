@@ -38,6 +38,7 @@
 
                 // Crée un élément <script> et insère le contenu du script récupéré
                 const scriptElement = document.createElement('script');
+                scriptElement.setAttribute('type', 'module'); // Ajoute l'attribut type="module"
                 scriptElement.textContent = scriptContent;
                 document.body.appendChild(scriptElement);
 
