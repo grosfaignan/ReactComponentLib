@@ -10,8 +10,14 @@
   <div id="root"></div>
   <script type="module" src="./RLSComponent/dist/RLSComponent.es.js"></script> <!-- Inclure le fichier JavaScript généré -->
   <script>
-    import path from 'path'
-    console.log(__dirname)
+    // Obtenir l'URL complète de la page actuelle
+    const currentUrl = window.location.href;
+
+    // Extraire le chemin du dossier en supprimant la partie du fichier
+    const directoryPath = currentUrl.substring(0, currentUrl.lastIndexOf('/') + 1);
+
+    // Afficher le chemin du dossier dans la console
+    console.log('Current Directory Path:', directoryPath);
   </script>
 </body>
 </html>
