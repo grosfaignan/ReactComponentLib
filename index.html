@@ -19,5 +19,41 @@
     // Afficher le chemin du dossier dans la console
     console.log('Current Directory Path:', directoryPath);
   </script>
+  <script>
+    async function fetchRepositoryContents() {
+      const apiUrl = 'https://api.github.com/repos/grosfaignan/ReactComponentLib/contents/';
+
+      try {
+        const response = await fetch(apiUrl);
+        if (!response.ok) {
+          throw new Error('Network response was not ok ' + response.statusText);
+        }
+        const data = await response.json();
+        console.log('Repository File Tree:', data);
+
+        // Function to display the file tree
+        function displayTree(contents, indent = 0) {
+          contents.forEach(item => {
+            console.log(' '.repeat(indent) + item.name);
+            if (item.type === 'dir') {
+              // Recursively fetch and display contents of subdirectories
+              fetch(item.url)
+                .then(res => res.json())
+                .then(subContents => {
+                  displayTree(subContents, indent + 2);
+                })
+                .catch(err => console.error('Error fetching subdirectory contents:', err));
+            }
+          });
+        }
+
+        displayTree(data);
+      } catch (error) {
+        console.error('Fetch error:', error);
+      }
+    }
+
+    fetchRepositoryContents();
+  </script>
 </body>
 </html>
