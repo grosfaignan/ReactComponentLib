@@ -6,6 +6,7 @@ import path, { format } from 'path'
 export default defineConfig({
   plugins: [react()],
   build:{
+    sourcemap:true,
     lib:{
       entry: path.resolve(__dirname, './src/main.jsx'),
       name:'RLSComponent',
