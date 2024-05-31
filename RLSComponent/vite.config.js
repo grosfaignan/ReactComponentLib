@@ -7,7 +7,7 @@ export default defineConfig({
   plugins: [react()],
   build:{
     lib:{
-      entry: path.resolve(__dirname, './src/index.js'),
+      entry: path.resolve(__dirname, './src/main.jsx'),
       name:'RLSComponent',
       fileName:(format)=>`RLSComponent.${format}.js`
     },
