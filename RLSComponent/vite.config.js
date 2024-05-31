@@ -9,6 +9,7 @@ export default defineConfig({
     lib:{
       entry: path.resolve(__dirname, './src/main.jsx'),
       name:'RLSComponent',
+      formats: ['es', 'cjs', 'umd', 'iife'], 
       fileName:(format)=>`RLSComponent.${format}.js`
     },
     rollupOptions:{
