@@ -1,59 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Application</title>
-  <!-- <link rel="stylesheet" href="/assets/index.css"> Inclure les fichiers CSS générés -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Application</title>
+    <!-- <link rel="stylesheet" href="/assets/index.css"> Inclure les fichiers CSS générés -->
 </head>
+
 <body>
-  <div id="root"></div>
-  <!-- <script type="module" src="./RLSComponent/dist/RLSComponent.es.js"></script>  -->
-  <script>
-    // Obtenir l'URL complète de la page actuelle
-    const currentUrl = window.location.href;
+    <div id="root"></div>
+    <!-- <script type="module" src="./RLSComponent/dist/RLSComponent.es.js"></script>  -->
+    <script>
+        // Obtenir l'URL complète de la page actuelle
+        const currentUrl = window.location.href;
 
-    // Extraire le chemin du dossier en supprimant la partie du fichier
-    const directoryPath = currentUrl.substring(0, currentUrl.lastIndexOf('/') + 1);
+        // Extraire le chemin du dossier en supprimant la partie du fichier
+        const directoryPath = currentUrl.substring(0, currentUrl.lastIndexOf('/') + 1);
 
-    // Afficher le chemin du dossier dans la console
-    console.log('Current Directory Path:', directoryPath);
-  </script>
-  <script>
-    async function fetchRepositoryContents() {
-      const apiUrl = 'https://api.github.com/repos/grosfaignan/ReactComponentLib/contents/';
+        // Afficher le chemin du dossier dans la console
+        console.log('Current Directory Path:', directoryPath);
+    </script>
+    <script>
+        const scriptUrl = 'https://api.github.com/repos/grosfaignan/ReactComponentLib/contents/RLSComponent/dist/RLSComponent.es.js';
 
-      try {
-        const response = await fetch(apiUrl);
-        if (!response.ok) {
-          throw new Error('Network response was not ok ' + response.statusText);
-        }
-        const data = await response.json();
-        console.log('Repository File Tree:', data);
+        async function loadScriptFromGitHub(url) {
+            try {
+                const response = await fetch(url, {
+                    headers: {
+                        'Accept': 'application/vnd.github.v3.raw' // Indique que l'on souhaite le contenu brut
+                    }
+                });
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                const scriptContent = await response.text();
 
-        // Function to display the file tree
-        function displayTree(contents, indent = 0) {
-          contents.forEach(item => {
-            console.log(' '.repeat(indent) + item.name);
-            if (item.type === 'dir') {
-              // Recursively fetch and display contents of subdirectories
-              fetch(item.url)
-                .then(res => res.json())
-                .then(subContents => {
-                  displayTree(subContents, indent + 2);
-                })
-                .catch(err => console.error('Error fetching subdirectory contents:', err));
+                // Crée un élément <script> et insère le contenu du script récupéré
+                const scriptElement = document.createElement('script');
+                scriptElement.textContent = scriptContent;
+                document.body.appendChild(scriptElement);
+
+                console.log('Script loaded successfully.');
+            } catch (error) {
+                console.error('Failed to load script:', error);
             }
-          });
         }
+        loadScriptFromGitHub(scriptUrl);
 
-        displayTree(data);
-      } catch (error) {
-        console.error('Fetch error:', error);
-      }
-    }
-
-    fetchRepositoryContents();
-  </script>
+    </script>
 </body>
+
 </html>
